@@ -1,8 +1,18 @@
 import React from 'react'
 
-const Main = () => {
+import styles from 'styles/index'
+
+const Main = (props) => {
   return (
-    <p>HELLO MOTHERFUCKER</p>
+    <div>
+      <header>
+        <h1>Bad Weather</h1>
+      </header>
+
+      <section style={styles.mainBg}>
+        {props.children}
+      </section>
+    </div>
   )
 }
 

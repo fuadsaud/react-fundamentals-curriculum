@@ -2,10 +2,12 @@ import React from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import Main from 'containers/Main'
+import Home from 'components/Home'
 
 const routes = (
   <Router history={browserHistory}>
     <Route path='/' component={Main}>
+      <IndexRoute component={Home} />
     </Route>
   </Router>
 )
