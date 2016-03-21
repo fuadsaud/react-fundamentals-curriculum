@@ -7,6 +7,9 @@ var HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
 });
 
 module.exports = {
+  devServer: {
+    historyApiFallback: true,
+  },
   entry: [
     './app/index.js',
   ],
