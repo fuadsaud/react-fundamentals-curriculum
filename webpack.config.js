@@ -21,8 +21,12 @@ module.exports = {
   output: {
     filename: 'index_bundle.js',
     path: __dirname + '/dist',
+    publicPath: '/',
   },
   plugins: [HTMLWebpackPluginConfig],
+  preLoaders: [
+    { test: /\.js$/, loader: 'source-map-loader' },
+  ],
   resolve: {
     alias: {
       components: __dirname + '/app/components',

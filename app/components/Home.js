@@ -1,14 +1,13 @@
 import React from 'react'
 
+import GetLocationContainer from 'containers/GetLocationContainer'
+
 const Home = () => {
   return (
-    <div>
-      <p>Enter a location</p>
-      <form>
-        <input type="text" name="location"/>
+    <div style={{ overflow: 'auto' }}>
+      <h2>Enter a location</h2>
 
-        <button type="submit">Get weather info</button>
-      </form>
+      <GetLocationContainer/>
     </div>
   )
 }
