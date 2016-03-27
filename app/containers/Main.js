@@ -17,12 +17,15 @@ const styles = {
   mainH: {
     color: 'white',
     margin: 0,
+  },
+  content: {
+    padding: 20,
   }
 }
 
 const Main = (props) => {
   return (
-    <section id="main" style={styles.mainContainer}>
+    <section className="main" style={styles.mainContainer}>
       <header style={styles.mainHeader}>
         <Link to="/">
           <h1 style={styles.mainH}>Bad Weather</h1>
@@ -31,7 +34,7 @@ const Main = (props) => {
         <GetLocationContainer/>
       </header>
 
-      <section id="content" style={styles.mainBg}>
+      <section className="content" style={styles.content}>
         {props.children}
       </section>
     </section>

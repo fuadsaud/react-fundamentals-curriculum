@@ -12,12 +12,8 @@ const styles = {
 }
 
 const Day = React.createClass({
-  conditions() {
-    return this.props.conditions
-  },
-
   date() {
-    return moment(this.conditions().dt * 1000)
+    return moment(this.props.day.dt * 1000)
   },
 
   calendar() {
@@ -29,23 +25,30 @@ const Day = React.createClass({
   },
 
   weather() {
-    return this.conditions().weather[0]
+    return this.props.day.weather[0]
   },
 
   propTypes: {
-    conditions: PropTypes.object.isRequired,
+    day: PropTypes.shape({
+      dt: PropTypes.number.isRequired,
+      weather: PropTypes.array.isRequired,
+    }).isRequired,
+    handleClick: PropTypes.func,
   },
 
   render() {
     return (
-      <section className='day'>
+      <div
+        className='day'
+        onClick={this.props.handleClick}
+        style={this.props.handleClick ? { cursor: 'pointer' } : {}}>
         <img
           style={styles.weatherIcon}
           src={`/app/images/weather-icons/${this.icon()}.svg`}
           alt='Weather'/>
 
         <h3 style={styles.calendar}>{this.calendar()}</h3>
-      </section>
+      </div>
     )
   },
 })

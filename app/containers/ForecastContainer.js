@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 import Weather from 'lib/Weather'
 
@@ -23,6 +23,10 @@ const ForecastContainer = React.createClass({
     })
   },
 
+  contextTypes: {
+    router: PropTypes.object.isRequired,
+  },
+
   componentDidMount() {
     this.getForecast(this.props.routeParams.location)
   },
@@ -37,10 +41,19 @@ const ForecastContainer = React.createClass({
     }
   },
 
+  handleClick(weather) {
+    this.context.router.push({
+      pathname: `/detail/${this.props.routeParams.location}`,
+      state: {
+        weather: weather,
+      },
+    })
+  },
+
   render() {
     return this.isLoading()
       ? <Loading/>
-      : <Forecast forecast={this.forecast()}/>
+      : <Forecast forecast={this.forecast()} handleClick={this.handleClick} />
   },
 })
 

@@ -20,7 +20,6 @@ const styles = {
     textAlign: 'center',
   },
   forecastContainer: {
-    padding: 20,
     overflow: 'auto',
   },
 }
@@ -34,24 +33,35 @@ const Forecast = React.createClass({
     return this.props.forecast.list
   },
 
+  handleDetail(e) {
+    e.preventDefault()
+
+    this.context.router.push({
+      pathname: '/detail/'
+    })
+
+  },
+
   locationName() {
     return `${this.city().name}, ${this.city().country}`
   },
 
   propTypes: {
     forecast: PropTypes.object.isRequired,
+    handleClick: PropTypes.func.isRequired,
   },
 
   render() {
+    console.log("FORECAST");
     return (
-      <section id="forecast" style={styles.forecastContainer}>
+      <section className="forecast" style={styles.forecastContainer}>
         <h2 style={styles.locationName}>{this.locationName()}</h2>
 
         <ul style={styles.days}>
           {this.days().map((day) => {
             return (
               <li key={day.dt} style={styles.day}>
-                <Day conditions={day}/>
+                <Day day={day} handleClick={this.props.handleClick.bind(null, day)} />
               </li>
             )
           })}
