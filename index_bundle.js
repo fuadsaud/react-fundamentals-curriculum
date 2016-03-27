@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "/rect-fundamentals-curriculum";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -19698,6 +19698,10 @@
 
 	var _ForecastContainer2 = _interopRequireDefault(_ForecastContainer);
 
+	var _DetailContainer = __webpack_require__(344);
+
+	var _DetailContainer2 = _interopRequireDefault(_DetailContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var routes = _react2.default.createElement(
@@ -19707,7 +19711,8 @@
 	    _reactRouter.Route,
 	    { path: '/', component: _Main2.default },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'forecast/:location', component: _ForecastContainer2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: 'forecast/:location', component: _ForecastContainer2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'detail/:location', component: _DetailContainer2.default })
 	  )
 	);
 
@@ -24812,13 +24817,16 @@
 	  mainH: {
 	    color: 'white',
 	    margin: 0
+	  },
+	  content: {
+	    padding: 20
 	  }
 	};
 
 	var Main = function Main(props) {
 	  return _react2.default.createElement(
 	    'section',
-	    { id: 'main', style: styles.mainContainer },
+	    { className: 'main', style: styles.mainContainer },
 	    _react2.default.createElement(
 	      'header',
 	      { style: styles.mainHeader },
@@ -24835,7 +24843,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'section',
-	      { id: 'content', style: styles.mainBg },
+	      { className: 'content', style: styles.content },
 	      props.children
 	    )
 	  );
@@ -25041,6 +25049,12 @@
 	      });
 	    });
 	  },
+
+
+	  contextTypes: {
+	    router: _react.PropTypes.object.isRequired
+	  },
+
 	  componentDidMount: function componentDidMount() {
 	    this.getForecast(this.props.routeParams.location);
 	  },
@@ -25052,8 +25066,16 @@
 	      isLoading: true
 	    };
 	  },
+	  handleClick: function handleClick(weather) {
+	    this.context.router.push({
+	      pathname: '/detail/' + this.props.routeParams.location,
+	      state: {
+	        weather: weather
+	      }
+	    });
+	  },
 	  render: function render() {
-	    return this.isLoading() ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(_Forecast2.default, { forecast: this.forecast() });
+	    return this.isLoading() ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(_Forecast2.default, { forecast: this.forecast(), handleClick: this.handleClick });
 	  }
 	});
 
@@ -26301,7 +26323,6 @@
 	    textAlign: 'center'
 	  },
 	  forecastContainer: {
-	    padding: 20,
 	    overflow: 'auto'
 	  }
 	};
@@ -26314,19 +26335,30 @@
 	  days: function days() {
 	    return this.props.forecast.list;
 	  },
+	  handleDetail: function handleDetail(e) {
+	    e.preventDefault();
+
+	    this.context.router.push({
+	      pathname: '/detail/'
+	    });
+	  },
 	  locationName: function locationName() {
 	    return this.city().name + ', ' + this.city().country;
 	  },
 
 
 	  propTypes: {
-	    forecast: _react.PropTypes.object.isRequired
+	    forecast: _react.PropTypes.object.isRequired,
+	    handleClick: _react.PropTypes.func.isRequired
 	  },
 
 	  render: function render() {
+	    var _this = this;
+
+	    console.log("FORECAST");
 	    return _react2.default.createElement(
 	      'section',
-	      { id: 'forecast', style: styles.forecastContainer },
+	      { className: 'forecast', style: styles.forecastContainer },
 	      _react2.default.createElement(
 	        'h2',
 	        { style: styles.locationName },
@@ -26339,7 +26371,7 @@
 	          return _react2.default.createElement(
 	            'li',
 	            { key: day.dt, style: styles.day },
-	            _react2.default.createElement(_Day2.default, { conditions: day })
+	            _react2.default.createElement(_Day2.default, { day: day, handleClick: _this.props.handleClick.bind(null, day) })
 	          );
 	        })
 	      )
@@ -26381,11 +26413,8 @@
 
 	var Day = _react2.default.createClass({
 	  displayName: 'Day',
-	  conditions: function conditions() {
-	    return this.props.conditions;
-	  },
 	  date: function date() {
-	    return (0, _moment2.default)(this.conditions().dt * 1000);
+	    return (0, _moment2.default)(this.props.day.dt * 1000);
 	  },
 	  calendar: function calendar() {
 	    return this.date().format('dddd, MMM D');
@@ -26394,18 +26423,25 @@
 	    return this.weather().icon;
 	  },
 	  weather: function weather() {
-	    return this.conditions().weather[0];
+	    return this.props.day.weather[0];
 	  },
 
 
 	  propTypes: {
-	    conditions: _react.PropTypes.object.isRequired
+	    day: _react.PropTypes.shape({
+	      dt: _react.PropTypes.number.isRequired,
+	      weather: _react.PropTypes.array.isRequired
+	    }).isRequired,
+	    handleClick: _react.PropTypes.func
 	  },
 
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'section',
-	      { className: 'day' },
+	      'div',
+	      {
+	        className: 'day',
+	        onClick: this.props.handleClick,
+	        style: this.props.handleClick ? { cursor: 'pointer' } : {} },
 	      _react2.default.createElement('img', {
 	        style: styles.weatherIcon,
 	        src: '/app/images/weather-icons/' + this.icon() + '.svg',
@@ -39523,6 +39559,103 @@
 	    return zh_tw;
 
 	}));
+
+/***/ },
+/* 344 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Detail = __webpack_require__(345);
+
+	var _Detail2 = _interopRequireDefault(_Detail);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DetailContainer = _react2.default.createClass({
+	  displayName: 'DetailContainer',
+	  render: function render() {
+	    return _react2.default.createElement(_Detail2.default, {
+	      weather: this.props.location.state.weather,
+	      location: this.props.routeParams.location });
+	  }
+	});
+
+	exports.default = DetailContainer;
+
+/***/ },
+/* 345 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Day = __webpack_require__(243);
+
+	var _Day2 = _interopRequireDefault(_Day);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var styles = {
+	  textAlign: 'center'
+	};
+
+	var kToC = function kToC(k) {
+	  return Math.round(k) - 273;
+	};
+
+	var Detail = function Detail(props) {
+	  return _react2.default.createElement(
+	    'section',
+	    { className: 'detail', style: styles },
+	    _react2.default.createElement(_Day2.default, { day: props.weather }),
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        props.location
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        props.weather.weather[0].description
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        kToC(props.weather.temp.min),
+	        '℃ / ',
+	        kToC(props.weather.temp.max),
+	        '℃'
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        'humidity: ',
+	        props.weather.humidity
+	      )
+	    )
+	  );
+	};
+
+	exports.default = Detail;
 
 /***/ }
 /******/ ]);
