@@ -16,10 +16,12 @@ const styles = {
     padding: 0,
   },
   locationName: {
-    color: '#777',
-    fontSize: '3em',
     fontWeight: 100,
     textAlign: 'center',
+  },
+  forecastContainer: {
+    padding: 20,
+    overflow: 'auto',
   },
 }
 
@@ -41,10 +43,8 @@ const Forecast = React.createClass({
   },
 
   render() {
-    console.log('FORECAST')
-
     return (
-      <section className="forecast">
+      <section id="forecast" style={styles.forecastContainer}>
         <h2 style={styles.locationName}>{this.locationName()}</h2>
 
         <ul style={styles.days}>

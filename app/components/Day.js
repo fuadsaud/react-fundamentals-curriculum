@@ -3,7 +3,6 @@ import moment from 'moment'
 
 const styles = {
   calendar: {
-    color: '#777',
     fontSize: '2em',
     fontWeight: 100,
   },
@@ -38,8 +37,6 @@ const Day = React.createClass({
   },
 
   render() {
-    console.log('DAY');
-
     return (
       <section className='day'>
         <img
