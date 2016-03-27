@@ -32,6 +32,7 @@ module.exports = {
       components: __dirname + '/app/components',
       config: __dirname + '/app/config/',
       containers: __dirname + '/app/containers',
+      lib: __dirname + '/app/lib',
       styles: __dirname + '/app/styles',
     }
   }
