@@ -1,13 +1,11 @@
 import React from 'react'
 
-export default class Forecast extends React.Component {
-  render() {
-    return (
-      <div>
-        <h2>{this.props.routeParams.playerOne}</h2>
-      </div>
-    )
-  }
+const Forecast = (props) => {
+  return (
+    <div>
+      <h2>{props.location}</h2>
+    </div>
+  )
 }
 
 export default Forecast
