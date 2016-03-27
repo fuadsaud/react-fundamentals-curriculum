@@ -33,7 +33,6 @@ module.exports = {
       config: __dirname + '/app/config/',
       containers: __dirname + '/app/containers',
       lib: __dirname + '/app/lib',
-      styles: __dirname + '/app/styles',
     }
   }
 }

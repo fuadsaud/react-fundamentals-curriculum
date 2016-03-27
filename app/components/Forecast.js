@@ -1,4 +1,27 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+
+import Day from 'components/Day'
+
+const styles = {
+  day: {
+    listStyle: 'none',
+    margin: 30,
+    textAlign: 'center',
+  },
+  days: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginTop: 60,
+    padding: 0,
+  },
+  locationName: {
+    color: '#777',
+    fontSize: '3em',
+    fontWeight: 100,
+    textAlign: 'center',
+  },
+}
 
 const Forecast = React.createClass({
   city() {
@@ -13,12 +36,26 @@ const Forecast = React.createClass({
     return `${this.city().name}, ${this.city().country}`
   },
 
+  propTypes: {
+    forecast: PropTypes.object.isRequired,
+  },
+
   render() {
+    console.log('FORECAST')
+
     return (
       <section className="forecast">
-        <h2>{this.locationName()}</h2>
+        <h2 style={styles.locationName}>{this.locationName()}</h2>
 
-        {this.days().map((day) => <Day conditions={day}/>)}
+        <ul style={styles.days}>
+          {this.days().map((day) => {
+            return (
+              <li key={day.dt} style={styles.day}>
+                <Day conditions={day}/>
+              </li>
+            )
+          })}
+        </ul>
       </section>
     )
   },
